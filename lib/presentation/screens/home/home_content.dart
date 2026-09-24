@@ -322,25 +322,66 @@ class _HomeContentState extends State<HomeContent> {
                         // ABOUT
                         // ==================================================
 
-                        const Padding(
-                          padding:
-                          EdgeInsets.symmetric(horizontal: 20),
-                          child: Text(
-                            'About',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(height: 14),
+                        // ==================================================
+// ABOUT
+// ==================================================
 
                         Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 20),
-                          child: _profileDetails(
-                            selectedUser,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+
+                              const Text(
+                                'About',
+                                style: TextStyle(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: -0.3,
+                                ),
+                              ),
+
+                              const SizedBox(height: 12),
+
+                              // ABOUT TEXT
+                              Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.all(18),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(22),
+                                ),
+                                child: Text(
+                                  'I am ${selectedUser.firstName}, '
+                                      'looking to meet someone genuine and interesting. '
+                                      'I enjoy good conversations, exploring new places '
+                                      'and spending quality time with people I care about.',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    height: 1.55,
+                                    color: Colors.grey.shade700,
+                                  ),
+                                ),
+                              ),
+
+                              const SizedBox(height: 28),
+
+                              // THE BASICS TITLE
+                              const Text(
+                                'THE BASICS',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xFFCE6680),
+                                  letterSpacing: 1.8,
+                                ),
+                              ),
+
+                              const SizedBox(height: 12),
+
+                              // BASICS CARD
+                              _profileDetails(selectedUser),
+                            ],
                           ),
                         ),
 
@@ -585,54 +626,166 @@ class _HomeContentState extends State<HomeContent> {
   Widget _profileDetails(UserModel user) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 18,
+        vertical: 6,
+      ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 15,
+            color: Colors.black.withOpacity(0.035),
+            blurRadius: 18,
             offset: const Offset(0, 5),
           ),
         ],
       ),
       child: Column(
         children: [
-          _detailRow(
-            'Name',
-            '${user.firstName}, ${user.age}',
+
+          // AGE
+          _basicDetailRow(
+            icon: Icons.cake_outlined,
+            title: 'Age',
+            value: '${user.age} years old',
           ),
 
-          _detailRow(
-            'Gender',
-            _capitalize(user.gender),
+          _basicDivider(),
+
+          // HEIGHT
+          _basicDetailRow(
+            icon: Icons.straighten_outlined,
+            title: 'Height',
+            value: '5\'6" (168 cm)',
           ),
 
-          _detailRow(
-            'Age',
-            '${user.age}',
+          _basicDivider(),
+
+          // LIVES IN
+          _basicDetailRow(
+            icon: Icons.location_on_outlined,
+            title: 'Lives in',
+            value: user.city,
+            subtitle: user.state,
           ),
 
-          _detailRow(
-            'Living In',
-            user.city,
+          _basicDivider(),
+
+          // GENDER
+          _basicDetailRow(
+            icon: Icons.person_outline,
+            title: 'Gender',
+            value: _capitalize(user.gender),
           ),
 
-          _detailRow(
-            'State',
-            user.state,
+          _basicDivider(),
+
+          // COUNTRY
+          _basicDetailRow(
+            icon: Icons.public_outlined,
+            title: 'Country',
+            value: user.country,
           ),
 
-          _detailRow(
-            'Country',
-            user.country,
+          _basicDivider(),
+
+          // STATE
+          _basicDetailRow(
+            icon: Icons.map_outlined,
+            title: 'State',
+            value: user.state,
+          ),
+
+        ],
+      ),
+    );
+  }
+  Widget _basicDivider() {
+    return Divider(
+      height: 1,
+      thickness: 0.7,
+      color: Colors.grey.shade200,
+    );
+  }
+  Widget _basicDetailRow({
+    required IconData icon,
+    required String title,
+    required String value,
+    String? subtitle,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 16,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+
+          // ICON
+          SizedBox(
+            width: 38,
+            child: Icon(
+              icon,
+              size: 24,
+              color: const Color(0xFFCC6680),
+            ),
+          ),
+
+          const SizedBox(width: 10),
+
+          // TITLE
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.grey.shade700,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+
+          const SizedBox(width: 12),
+
+          // VALUE
+          Flexible(
+            flex: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+
+                Text(
+                  value,
+                  textAlign: TextAlign.right,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF292929),
+                  ),
+                ),
+
+                if (subtitle != null &&
+                    subtitle.isNotEmpty) ...[
+                  const SizedBox(height: 3),
+                  Text(
+                    subtitle,
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey.shade500,
+                    ),
+                  ),
+                ],
+              ],
+            ),
           ),
         ],
       ),
     );
   }
-
   // ============================================================
   // DETAIL ROW
   // ============================================================
